@@ -5,6 +5,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     [SerializeField] private Text moneyText;
+    [SerializeField] private Text stacksText;
     [SerializeField] private AudioSource backgroundMusic; // Referência ao AudioSource
     [SerializeField] private AudioClip musicClip; // Música do jogo
 
@@ -40,6 +41,14 @@ public class GameManager : MonoBehaviour
     {
         money += amount;
         UpdateMoneyText();
+    }
+
+    public void UpdateStacksText(int currentStacks, int maxStacks)
+    {
+        if (stacksText != null)
+        {
+            stacksText.text = $"{currentStacks}/{maxStacks}";
+        }
     }
 
     private void UpdateMoneyText()

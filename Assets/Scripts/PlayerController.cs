@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector3 initialPositionOffset = new Vector3(0.68f, 0.96f, -0.59f);
     [SerializeField] private Vector3 initialRotation = new Vector3(0f, 0f, 90f);
 
+    [SerializeField] private SkinnedMeshRenderer dressRenderer;
+
     private void Update()
     {
         CheckForEnemiesToCollect();
@@ -41,6 +43,7 @@ public class PlayerController : MonoBehaviour
             ResetToTPose(enemy);
             PositionInStack(enemy);
             enemyController.Collect();
+            GameManager.Instance.UpdateStacksText(collectedEnemies.Count, stackLimit);
         }
     }
 
@@ -51,7 +54,7 @@ public class PlayerController : MonoBehaviour
 
     private void PositionInStack(GameObject enemy)
     {
-        Transform pivot = enemy.transform.Find("PivôCentralizado");
+        Transform pivot = enemy.transform.Find("Pivot");
 
         Vector3 stackPosition = backStackPosition.position + initialPositionOffset + Vector3.up * stackSpacing * collectedEnemies.Count;
         // Mantendo a rotação alinhada com a rotação do jogador, ajustando para a "costa"
@@ -164,7 +167,7 @@ public class PlayerController : MonoBehaviour
     public void IncreaseStackLimit()
     {
         stackLimit++;
-        Debug.Log("Novo limite de empilhamento: " + stackLimit);
+        GameManager.Instance.UpdateStacksText(collectedEnemies.Count, stackLimit);
     }
 
     internal int GetStackLimit()
@@ -207,5 +210,21 @@ public class PlayerController : MonoBehaviour
     internal void RemoveEnemy(GameObject enemyToRemove)
     {
         collectedEnemies.Remove(enemyToRemove);
+        GameManager.Instance.UpdateStacksText(collectedEnemies.Count, stackLimit);
     }
+
+    public void SetColor(Color color)
+    {
+        if (dressRenderer != null)
+        {
+            // Altere a cor do material (se houver um material compartilhado)
+            dressRenderer.material.color = color;
+        }
+        else
+        {
+            Debug.LogWarning("Dress_Girl não encontrado!");
+        }
+    }
+
+
 }

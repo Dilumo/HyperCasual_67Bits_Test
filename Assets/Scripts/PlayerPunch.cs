@@ -52,7 +52,6 @@ public class PlayerPunch : MonoBehaviour
                     Vector3 punchDirection = (enemy.transform.position - transform.position).normalized;
                     enemyController.ApplyPunch(punchDirection * punchForce);
                     PlayPunchSound();
-                    Debug.Log("Inimigo socado!");
                 }
             }
         }

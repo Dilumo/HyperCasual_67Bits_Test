@@ -55,7 +55,6 @@ public class DeliveryZone : MonoBehaviour
             isDepositing = false;
             inZone = false;
             StopCoroutine(DepositEnemiesGradually()); // Interrompe a corrotina de coleta
-            Debug.Log("Coleta cancelada, jogador saiu da zona.");
         }
     }
 
@@ -70,7 +69,7 @@ public class DeliveryZone : MonoBehaviour
 
         List<GameObject> enemiesToRemove = new List<GameObject>();
 
-        while (enemiesDeposited <= enemyCount)
+        while (enemyCount > 0)
         {
             if (isDepositing == false)
             {
@@ -86,41 +85,22 @@ public class DeliveryZone : MonoBehaviour
                 // Simula o tempo de coleta do inimigo
                 yield return new WaitForSeconds(collectionDuration);
 
-                // Adiciona o inimigo à lista de remoção
-                enemiesToRemove.Add(enemy);
 
-                if (enemiesToRemove.Count > 0)
-                {
-                    // Toca o som de ganhar dinheiro após a coleta
-                    PlayRewardSound();
+                // Toca o som de ganhar dinheiro após a coleta
+                PlayRewardSound();
 
-                    // Adiciona recompensa ao jogador
-                    GameManager.Instance.AddMoney(rewardPerEnemy);
-                    enemiesDeposited++;
-                    enemy.SetActive(false);
-                }
-                else
-                {
-                    Debug.Log("Não há inimigos para remover");
-                }
+                // Adiciona recompensa ao jogador
+                GameManager.Instance.AddMoney(rewardPerEnemy);
+                enemiesDeposited++;
+                enemy.SetActive(false);
+                enemyCount--;
             }
 
-            // Espera entre as coletas dos inimigos
-            yield return new WaitForSeconds(depositDelay);
-            foreach (var enemyToRemove in enemiesToRemove)
-            {
-                playerCollector.RemoveEnemy(enemyToRemove);
-                Destroy(enemyToRemove); // Remove o inimigo da cena
-            }
-
-            enemiesToRemove.Clear();
-
-            Debug.Log("Inimigos depositados: " + enemiesDeposited);
-
+            playerCollector.RemoveEnemy(enemy);
+            Destroy(enemy); // Remove o inimigo da cena
         }
 
         // Toca o som de recompensa final e atualiza a recompensa total
-        GameManager.Instance.AddMoney(reward - (rewardPerEnemy * enemyCount));
         playerCollector.ClearEnemies(); // Limpa os inimigos do jogador após o depósito
     }
 

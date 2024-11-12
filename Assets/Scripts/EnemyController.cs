@@ -26,7 +26,6 @@ public class EnemyController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         if (isWaitingToCollect || isCollected) return;
-        Debug.Log("Colisão com: " + collision.gameObject.tag);
         // Verifica se o inimigo colidiu com o chão (tag "Ground") e habilita a coleta
         if (!isPunchable && collision.gameObject.CompareTag("Ground"))
         {
@@ -53,7 +52,6 @@ public class EnemyController : MonoBehaviour
     // Função chamada pelo soco do jogador
     public void ApplyPunch(Vector3 punchForce)
     {
-        Debug.Log("Inimigo socado!");
         if (!isPunchable) return; // Impede socos múltiplos
 
         rb.isKinematic = false; // Permite que a física seja aplicada
@@ -73,7 +71,6 @@ public class EnemyController : MonoBehaviour
     {
         if (canBeCollected)
         {
-            Debug.Log("Inimigo coletado!");
 
             // Reseta o ragdoll antes de coletar
             ragdollOnDeath.ResetRagdoll();

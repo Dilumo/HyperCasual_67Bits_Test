@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5078728215799778102}
   m_Layer: 0
-  m_Name: pivo
-  m_TagString: "Piv\xF4Centralizado"
+  m_Name: pivot
+  m_TagString: Pivot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
